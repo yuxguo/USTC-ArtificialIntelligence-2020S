@@ -27,6 +27,7 @@ public:
 private:
     std::unordered_set<std::string> close_set;
     DestInfo dest_info;
+    int hvalues[DIM * DIM][DIM][DIM];
 
     bool isStateInCloseSet(const std::string &state);
     std::vector<std::string> splitString(const std::string &s, const std::string &split);

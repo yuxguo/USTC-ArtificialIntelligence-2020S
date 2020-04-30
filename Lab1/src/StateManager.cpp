@@ -203,17 +203,29 @@ int StateManager::hFunction(const std::string &state) {
         board[i / DIM][i % DIM] = std::stoi(v[i]);
     }
     int loss = 0;
+//    for (int i = 0; i < DIM; ++i) {
+//        for (int j = 0; j < DIM; ++j) {
+//            // 7(i, j-1), 7(i, j)
+//            //            7(i+1, j)
+//            if ((j-1 >= 0) && (i+1 < DIM) && (board[i][j] == 7) &&
+//                (board[i][j-1] == 7) && (board[i+1][j] == 7)) {
+//                loss += (abs(i - this->dest_info.seven[0]) +
+//                        abs(j - this->dest_info.seven[1]));
+//            } else if ((board[i][j] != 0) && (board[i][j] != 7)) {
+//                loss += (abs(i -  this->dest_info.num_pos[board[i][j]][0]) +
+//                        abs(j -  this->dest_info.num_pos[board[i][j]][1]));
+//            }
+//        }
+//    }
     for (int i = 0; i < DIM; ++i) {
         for (int j = 0; j < DIM; ++j) {
             // 7(i, j-1), 7(i, j)
             //            7(i+1, j)
             if ((j-1 >= 0) && (i+1 < DIM) && (board[i][j] == 7) &&
                 (board[i][j-1] == 7) && (board[i+1][j] == 7)) {
-                loss += (abs(i - this->dest_info.seven[0]) +
-                        abs(j - this->dest_info.seven[1]));
+                loss += this->hvalues[board[i][j]][i][j];
             } else if ((board[i][j] != 0) && (board[i][j] != 7)) {
-                loss += (abs(i -  this->dest_info.num_pos[board[i][j]][0]) +
-                        abs(j -  this->dest_info.num_pos[board[i][j]][1]));
+                loss += this->hvalues[board[i][j]][i][j];
             }
         }
     }
@@ -235,6 +247,26 @@ StateManager::StateManager(std::string destination_state) {
             } else if ((board[i][j] != 0) && (board[i][j] != 7)) {
                 this->dest_info.num_pos[board[i][j]][0] = i;
                 this->dest_info.num_pos[board[i][j]][1] = j;
+            }
+        }
+    }
+
+    for (int k = 0; k < DIM * DIM; ++k) {
+        for (int i = 0; i < DIM; ++i) {
+            for (int j = 0; j < DIM; ++j) {
+                // h value of k, when k in (i,j)
+                if (k != 0 && k != 7) {
+                    this->hvalues[k][i][j] = (abs(i -  this->dest_info.num_pos[k][0]) +
+                                             abs(j -  this->dest_info.num_pos[k][1]));
+                }
+                else if (k == 7) {
+                    if ((j-1 >= 0) && (i+i < DIM)) {
+                        this->hvalues[k][i][j] = (abs(i - this->dest_info.seven[0]) +
+                                                  abs(j - this->dest_info.seven[1]));
+                    } else {
+                        this->hvalues[k][i][j] = -1;
+                    }
+                }
             }
         }
     }

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
         AStar a_star(s_init, s_dest);
         Node *n = a_star.graphSearch();
         printMovement(n);
-
+        std::cout << n->state << std::endl;
     }
     return 0;
 }

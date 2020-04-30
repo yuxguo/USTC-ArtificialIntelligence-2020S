@@ -30,12 +30,18 @@ Node *AStar::graphSearch() {
     Node *n = this->nodes[0];
     int cost = n->depth + this->sm->hFunction(n->state);
     this->fringe.push(std::make_pair(cost, n));
+    int print_count = 0;
 
     while (!fringe.empty()) {
         auto t = fringe.top();
         fringe.pop();
         cost = t.first;
         n = t.second;
+        if (print_count == 100000) {
+            std::cout << n->depth << std::endl;
+            print_count = 0;
+        }
+        print_count ++;
         if (n->state == this->dest_state) {
             return n;
         }
