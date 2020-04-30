@@ -10,6 +10,16 @@
 #include "include/include.h"
 
 int main(int argc, char *argv[]) {
+//    std::priority_queue<std::pair<std::pair<int, int>, int>, std::vector<std::pair<std::pair<int, int>, int> >, std::greater<> > q;
+//    q.push(std::make_pair(std::make_pair(2,3),4));
+//    q.push(std::make_pair(std::make_pair(2,5),1));
+//    q.push(std::make_pair(std::make_pair(3,1),2));
+//    q.push(std::make_pair(std::make_pair(2,3),1));
+//    while (!q.empty()) {
+//        auto v = q.top();
+//        q.pop();
+//        std::cout << v.first.first << " "<< v.first.second << " " << v.second << std::endl;
+//    }
     if (argc == 1) {
         // std::cout << "initial state file name: " << argv[1] << std::endl;
         // std::cout << "dest state file name: " << argv[2] << std::endl;

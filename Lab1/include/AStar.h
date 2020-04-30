@@ -23,7 +23,8 @@ public:
 
 
 private:
-    std::priority_queue<std::pair<int, Node *> ,std::vector<std::pair<int, Node *> >, std::greater<> > fringe;
+
+    std::priority_queue<std::pair<std::pair<int ,int>, std::pair<int, Node* > > ,std::vector<std::pair<std::pair<int ,int>, std::pair<int, Node* > >>, std::greater<> > fringe;
     std::vector<Node *> nodes;
     std::string init_state;
     std::string dest_state;

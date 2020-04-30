@@ -28,17 +28,21 @@ Node *AStar::graphSearch() {
     // TODO: add graph search
     // return the final node.
     Node *n = this->nodes[0];
-    int cost = n->depth + this->sm->hFunction(n->state);
-    this->fringe.push(std::make_pair(cost, n));
+    int h = this->sm->hFunction(n->state);
+    int g = n->depth;
+    int f = g + h;
+    this->fringe.push(std::make_pair(std::make_pair(f, h), std::make_pair(g, n)));
     int print_count = 0;
 
     while (!fringe.empty()) {
         auto t = fringe.top();
         fringe.pop();
-        cost = t.first;
-        n = t.second;
+        f = t.first.first;
+        h = t.first.second;
+        g = t.second.first;
+        n = t.second.second;
         if (print_count == 100000) {
-            std::cout << n->depth << std::endl;
+            std::cout << "(" << f << ", " << g << ", "<< h << ")" << std::endl;
             print_count = 0;
         }
         print_count ++;
@@ -52,8 +56,10 @@ Node *AStar::graphSearch() {
             n_tmp->from_parent_movement = s.first;
             n_tmp->depth = n->depth + 1;
             n_tmp->parent = n;
-            int n_tmp_cost = n->depth + this->sm->hFunction(n_tmp->state);
-            fringe.push(std::make_pair(n_tmp_cost, n_tmp));
+            int n_tmp_g = n_tmp->depth;
+            int n_tmp_h = this->sm->hFunction(n_tmp->state);
+            int n_tmp_f = n_tmp_g + n_tmp_h;
+            fringe.push(std::make_pair(std::make_pair(n_tmp_f, n_tmp_h), std::make_pair(n_tmp_g, n_tmp)));
             this->sm->insertIntoCloseSet(n_tmp->state);
             this->nodes.push_back(n_tmp);
         }
