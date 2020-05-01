@@ -10,36 +10,39 @@
 #include "include/include.h"
 
 int main(int argc, char *argv[]) {
-
     if (argc == 1) {
         // std::cout << "initial state file name: " << argv[1] << std::endl;
         // std::cout << "dest state file name: " << argv[2] << std::endl;
         std::ifstream initFile, destFile;
         initFile.open("../inputs/input3.txt");
         destFile.open("../inputs/dest.txt");
-        std::string s_init, s_dest, buffer;
+        char *init_state = new char[DIM*DIM+1];
+        char *dest_state = new char[DIM*DIM+1];
+        std::string buffer;
+
         for (int i = 0; i < DIM * DIM; ++i) {
             initFile >> buffer;
-            if (i == 0) {
-                s_init += buffer;
+            char num = (char )std::stoi(buffer);
+            if (num == 0) {
+                init_state[i] = ZERO;
             } else {
-                s_init += " " + buffer;
+                init_state[i] = num;
             }
         }
         for (int i = 0; i < DIM * DIM; ++i) {
             destFile >> buffer;
-            if (i == 0) {
-                s_dest += buffer;
+            char num = (char )std::stoi(buffer);
+            if (num == 0) {
+                dest_state[i] = ZERO;
             } else {
-                s_dest += " " + buffer;
+                dest_state[i] = num;
             }
         }
-        std::cout << s_init << std::endl;
-        std::cout << s_dest << std::endl;
-        AStar a_star(s_init, s_dest);
+        init_state[DIM*DIM] = '\0';
+        dest_state[DIM*DIM] = '\0';
+        AStar a_star(init_state, dest_state);
         Node *n = a_star.graphSearch();
         printMovement(n);
-        std::cout << n->state << std::endl;
     }
     return 0;
 }

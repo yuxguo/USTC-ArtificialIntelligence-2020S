@@ -17,7 +17,7 @@
 class AStar {
 
 public:
-    AStar(const std::string& init_state, const std::string& dest_state);
+    AStar(const char *init_state, const char *dest_state);
     ~AStar();
     Node *graphSearch();
 
@@ -26,8 +26,9 @@ private:
 
     std::priority_queue<std::pair<std::pair<int ,int>, std::pair<int, Node* > > ,std::vector<std::pair<std::pair<int ,int>, std::pair<int, Node* > >>, std::greater<> > fringe;
     std::vector<Node *> nodes;
-    std::string init_state;
-    std::string dest_state;
+    char init_state[DIM*DIM+1];
+    char dest_state[DIM*DIM+1];
+    bool check(const char* p1, const char *p2);
     StateManager *sm;
 
 };
