@@ -31,15 +31,15 @@ Node *AStar::graphSearch() {
     int h = this->sm->hFunction(n->state);
     int g = n->depth;
     int f = g + h;
-    this->fringe.push(std::make_pair(std::make_pair(f, h), std::make_pair(g, n)));
+    this->fringe.push(std::make_pair(std::make_pair(f, g), std::make_pair(h, n)));
     int print_count = 0;
 
     while (!fringe.empty()) {
         auto t = fringe.top();
         fringe.pop();
         f = t.first.first;
-        h = t.first.second;
-        g = t.second.first;
+        g = t.first.second;
+        h = t.second.first;
         n = t.second.second;
         if (print_count == 100000) {
             std::cout << "(" << f << ", " << g << ", "<< h << ")" << std::endl;
@@ -54,12 +54,16 @@ Node *AStar::graphSearch() {
             Node *n_tmp = new Node;
             n_tmp->state = s.second;
             n_tmp->from_parent_movement = s.first;
-            n_tmp->depth = n->depth + 1;
+            if (n_tmp->from_parent_movement.first == 7) {
+                n_tmp->depth = n->depth - 1;
+            } else {
+                n_tmp->depth = n->depth + 1;
+            }
             n_tmp->parent = n;
             int n_tmp_g = n_tmp->depth;
             int n_tmp_h = this->sm->hFunction(n_tmp->state);
             int n_tmp_f = n_tmp_g + n_tmp_h;
-            fringe.push(std::make_pair(std::make_pair(n_tmp_f, n_tmp_h), std::make_pair(n_tmp_g, n_tmp)));
+            fringe.push(std::make_pair(std::make_pair(n_tmp_f, n_tmp_g), std::make_pair(n_tmp_h, n_tmp)));
             this->sm->insertIntoCloseSet(n_tmp->state);
             this->nodes.push_back(n_tmp);
         }
