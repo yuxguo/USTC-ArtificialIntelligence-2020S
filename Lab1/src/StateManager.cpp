@@ -32,9 +32,6 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
         }
     }
 
-    //std::cout << state << std::endl;
-    //std::cout << "seven(x, y): " <<seven[0] << " " <<seven[1] << std::endl;
-    // std::cout << zeros[0][0] << " " <<zeros[0][1] << std::endl;
     std::vector<std::pair<std::pair<int, char>, char *> > result;
     // find possible movement, except 7
     for (auto & zero : zeros) {
@@ -227,4 +224,8 @@ StateManager::StateManager(const char *dest_state) {
             }
         }
     }
+}
+
+void StateManager::clearCloseSet() {
+    this->close_set.clear();
 }

@@ -10,12 +10,10 @@
 #include "include/include.h"
 
 int main(int argc, char *argv[]) {
-    if (argc == 1) {
-        // std::cout << "initial state file name: " << argv[1] << std::endl;
-        // std::cout << "dest state file name: " << argv[2] << std::endl;
+    if (argc == 4) {
         std::ifstream initFile, destFile;
-        initFile.open("../inputs/input3.txt");
-        destFile.open("../inputs/dest.txt");
+        initFile.open(argv[1]);
+        destFile.open(argv[2]);
         char *init_state = new char[DIM*DIM+1];
         char *dest_state = new char[DIM*DIM+1];
         std::string buffer;
@@ -40,9 +38,15 @@ int main(int argc, char *argv[]) {
         }
         init_state[DIM*DIM] = '\0';
         dest_state[DIM*DIM] = '\0';
-        AStar a_star(init_state, dest_state);
-        Node *n = a_star.graphSearch();
-        printMovement(n);
+        if (argv[3][0] == 'A') {
+            AStar a_star(init_state, dest_state);
+            Node *n = a_star.graphSearch();
+            printMovement(n);
+        } else {
+            IDAStar ida_star(init_state, dest_state);
+            Node *n = ida_star.graphSearch();
+            printMovement(n);
+        }
     }
     return 0;
 }

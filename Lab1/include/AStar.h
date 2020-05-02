@@ -24,7 +24,7 @@ public:
 
 private:
 
-    std::priority_queue<std::pair<std::pair<int ,int>, std::pair<int, Node* > > ,std::vector<std::pair<std::pair<int ,int>, std::pair<int, Node* > >>, std::greater<> > fringe;
+    std::priority_queue<std::pair<std::pair<int ,int>, Node* > ,std::vector<std::pair<std::pair<int ,int>, Node* > >, std::greater<> > fringe;
     std::vector<Node *> nodes;
     char init_state[DIM*DIM+1];
     char dest_state[DIM*DIM+1];
