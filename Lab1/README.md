@@ -19,8 +19,8 @@ Lab1
 ├── main.cpp
 ├── outputs
 │		├──	output1.txt
-│		├── output2.txt
-│   └── output3.txt
+│   ├── output2.txt
+│   └── output3.txt
 └── src
     ├── AStar.cpp
     ├── IDAStar.cpp
