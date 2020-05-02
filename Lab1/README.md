@@ -18,7 +18,7 @@ Lab1
 │   └── input3.txt
 ├── main.cpp
 ├── outputs
-│		├──	output1.txt
+│   ├── output1.txt
 │   ├── output2.txt
 │   └── output3.txt
 └── src
