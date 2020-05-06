@@ -42,6 +42,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
             auto res = this->stateMovement(x-1, y, 'd', state);
             if (!(this->isStateInCloseSet(res.second))) {
                 result.push_back(res);
+            } else {
+                delete[] res.second;
             }
         }
         if ((x+1 < DIM) && (GET_STATE(state, x+1, y) != ZERO) && (GET_STATE(state, x+1, y) != 7)) {
@@ -49,6 +51,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
             auto res = this->stateMovement(x+1, y, 'u', state);
             if (!(this->isStateInCloseSet(res.second))) {
                 result.push_back(res);
+            } else {
+                delete[] res.second;
             }
         }
         if ((y-1 >= 0) && (GET_STATE(state, x, y-1) != ZERO) && (GET_STATE(state, x, y-1) != 7)) {
@@ -56,6 +60,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
             auto res = this->stateMovement(x, y-1, 'r', state);
             if (!(this->isStateInCloseSet(res.second))) {
                 result.push_back(res);
+            } else {
+                delete[] res.second;
             }
         }
         if ((y+1 < DIM) && (GET_STATE(state, x, y+1) != ZERO) && (GET_STATE(state, x, y+1) != 7)) {
@@ -63,6 +69,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
             auto res = this->stateMovement(x, y+1, 'l', state);
             if (!(this->isStateInCloseSet(res.second))) {
                 result.push_back(res);
+            } else {
+                delete[] res.second;
             }
         }
     }
@@ -75,6 +83,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
         auto res = this->stateMovement(x, y, 'r', state);
         if (!(this->isStateInCloseSet(res.second))) {
             result.push_back(res);
+        } else {
+            delete[] res.second;
         }
     }
     if ((x-1 >= 0) && (y-1 >= 0) && (GET_STATE(state, x-1, y) == ZERO) && (GET_STATE(state, x-1, y-1) == ZERO)) {
@@ -82,6 +92,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
         auto res = this->stateMovement(x, y, 'u', state);
         if (!(this->isStateInCloseSet(res.second))) {
             result.push_back(res);
+        } else {
+            delete[] res.second;
         }
     }
 
@@ -91,6 +103,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
         auto res = this->stateMovement(x, y, 'l', state);
         if (!(this->isStateInCloseSet(res.second))) {
             result.push_back(res);
+        } else {
+            delete[] res.second;
         }
     }
 
@@ -99,6 +113,8 @@ std::vector<std::pair<std::pair<int, char>, char *> > StateManager::getSucceedSt
         auto res = this->stateMovement(x, y, 'd', state);
         if (!(this->isStateInCloseSet(res.second))) {
             result.push_back(res);
+        } else {
+            delete[] res.second;
         }
     }
     return result;
