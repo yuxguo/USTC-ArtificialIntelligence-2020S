@@ -7,6 +7,7 @@
 
 #include <queue>
 #include <vector>
+#include <stack>
 
 #include "include.h"
 #include "../include/StateManager.h"
@@ -18,11 +19,13 @@ public:
     ~IDAStar();
     Node *graphSearch();
 private:
-    std::priority_queue<std::pair<std::pair<int ,int>, Node* > ,std::vector<std::pair<std::pair<int ,int>, Node* > >, std::greater<> > fringe;
+    std::vector<Node *> fringe;
+    // std::priority_queue<std::pair<std::pair<int ,int>, Node* > ,std::vector<std::pair<std::pair<int ,int>, Node* > >, std::greater<> > fringe;
     std::vector<Node *> nodes;
     char init_state[DIM*DIM+1];
     char dest_state[DIM*DIM+1];
     bool check(const char* p1, const char *p2);
+    int DFS(Node *n, int threshold);
     StateManager *sm;
     const int INF = 100000;
 };
