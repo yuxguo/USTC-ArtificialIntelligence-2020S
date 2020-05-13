@@ -31,6 +31,7 @@ Node *IDAStar::graphSearch() {
     Node *n = this->nodes[0];
     int threshold = this->sm->hFunction(n->state);
     while (true) {
+        std::cout << threshold << std::endl;
         int tmp = DFS(n, threshold);
         if (tmp == -1) {
             return n;

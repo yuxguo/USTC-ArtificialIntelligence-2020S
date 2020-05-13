@@ -192,6 +192,7 @@ bool StateManager::isStateInCloseSet(const char *state) {
 
 int StateManager::hFunction(const char *state) {
     int loss = 0;
+    int xrow[22] = { 0 }, xcol[22] = { 0 };
     for (int i = 0; i < DIM; ++i) {
         for (int j = 0; j < DIM; ++j) {
             // 7(i, j-1), 7(i, j)
@@ -199,12 +200,89 @@ int StateManager::hFunction(const char *state) {
             if ((j-1 >= 0) && (i+1 < DIM) && (GET_STATE(state, i, j) == 7) &&
                 (GET_STATE(state, i, j-1) == 7) && (GET_STATE(state, i+1, j) == 7)) {
                 loss += this->hvalues[GET_STATE(state, i, j)][i][j];
+                xrow[7] = i;
+                xcol[7] = j;
             } else if ((GET_STATE(state, i, j) != ZERO) && (GET_STATE(state, i, j) != 7)) {
                 loss += this->hvalues[GET_STATE(state, i, j)][i][j];
+                xrow[GET_STATE(state, i, j)] = i;
+                xcol[GET_STATE(state, i, j)] = j;
             }
+            // record cur info
         }
     }
-    return loss;
+
+    int linearconflict = 0;
+    for (int row = 0; row < 5; ++row) {
+        int temp[5], tot = 0;
+        for (int i = 1; i <= 21; ++i)
+            if (xrow[i] == row && this->dest_info.num_pos[i][0] == row) {
+                temp[tot++] = i;
+            }
+        int conf[5] = { 0 };
+        int confflag[5][5] = { 0 };
+        for (int i = 0; i < tot - 1; ++i) {
+            for (int j = i + 1; j < tot; ++j) {
+                if (xcol[temp[i]] > xcol[temp[j]] && this->dest_info.num_pos[temp[i]][1] < this->dest_info.num_pos[temp[j]][1] ||
+                    xcol[temp[i]] < xcol[temp[j]] && this->dest_info.num_pos[temp[i]][1] > this->dest_info.num_pos[temp[j]][1]) {
+                    ++conf[i];
+                    ++conf[j];
+                    confflag[i][j] = confflag[j][i] = 1;
+                }
+            }
+        }
+        while (1) {
+            int maxi = 0;
+            bool flag = (conf[maxi] > 0);
+            for (int i = 1; i < tot; ++i) if (conf[i] > conf[maxi]) {
+                    maxi = i;
+                    flag = true;
+                }
+            if (!flag) break;
+            conf[maxi] = 0;
+            for (int i = 0; i < tot; ++i) if (i != maxi)
+                    if (confflag[i][maxi]) {
+                        --conf[i];
+                        confflag[i][maxi] = confflag[maxi][i] = 0;
+                    }
+            ++linearconflict;
+        }
+    }
+    for (int col = 0; col < 5; ++col) {
+        int temp[5], tot = 0;
+        for (int i = 1; i <= 21; ++i)
+            if (xcol[i] == col && this->dest_info.num_pos[i][1] == col) {
+                temp[tot++] = i;
+            }
+        int conf[5] = { 0 };
+        int confflag[5][5] = { 0 };
+        for (int i = 0; i < tot - 1; ++i) {
+            for (int j = i + 1; j < tot; ++j) {
+                if (xrow[temp[i]] > xrow[temp[j]] && this->dest_info.num_pos[temp[i]][0] < this->dest_info.num_pos[temp[j]][0] ||
+                    xrow[temp[i]] < xrow[temp[j]] && this->dest_info.num_pos[temp[i]][0] > this->dest_info.num_pos[temp[j]][0]) {
+                    ++conf[i];
+                    ++conf[j];
+                    confflag[i][j] = confflag[j][i] = 1;
+                }
+            }
+        }
+        while (1) {
+            int maxi = 0;
+            bool flag = (conf[maxi] > 0);
+            for (int i = 1; i < tot; ++i) if (conf[i] > conf[maxi]) {
+                    maxi = i;
+                    flag = true;
+                }
+            if (!flag) break;
+            conf[maxi] = 0;
+            for (int i = 0; i < tot; ++i) if (i != maxi)
+                    if (confflag[i][maxi]) {
+                        --conf[i];
+                        confflag[i][maxi] = confflag[maxi][i] = 0;
+                    }
+            ++linearconflict;
+        }
+    }
+    return (linearconflict + linearconflict + loss);
 }
 
 StateManager::StateManager(const char *dest_state) {
@@ -214,6 +292,8 @@ StateManager::StateManager(const char *dest_state) {
                 (GET_STATE(dest_state, i, j-1) == 7) && (GET_STATE(dest_state, i+1, j) == 7)) {
                 this->dest_info.seven[0] = i;
                 this->dest_info.seven[1] = j;
+                this->dest_info.num_pos[7][0] = i;
+                this->dest_info.num_pos[7][1] = j;
             } else if ((GET_STATE(dest_state, i, j) != ZERO) && (GET_STATE(dest_state, i, j) != 7)) {
                 this->dest_info.num_pos[GET_STATE(dest_state, i, j)][0] = i;
                 this->dest_info.num_pos[GET_STATE(dest_state, i, j)][1] = j;

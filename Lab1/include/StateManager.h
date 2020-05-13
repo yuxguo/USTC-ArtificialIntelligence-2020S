@@ -29,7 +29,7 @@ public:
 private:
     std::unordered_set<std::string> close_set;
     DestInfo dest_info;
-    int hvalues[DIM * DIM][DIM][DIM];
+    int hvalues[DIM * DIM][DIM][DIM]; // 25个数字，每个数字在I和J时的曼哈顿距离
 
     bool isStateInCloseSet(const char *state);
     static std::pair<std::pair<int, char>, char *> stateMovement (int x, int y, char dir, const char *board);

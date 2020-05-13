@@ -1,3 +1,4 @@
+
 //
 // Created by YxGuo on 4/29/20.
 //
@@ -21,6 +22,7 @@ struct Node {
     int depth;
     struct Node *parent;
 };
+
 
 void printMovement(Node *n);
 
