@@ -3,7 +3,7 @@
 The directory is arranged as following structure.
 
 ``` shell
-Lab1
+puzzles
 ├── CMakeLists.txt
 ├── README.md
 ├── include
@@ -30,7 +30,7 @@ Lab1
 
 ## Build
 
-In `Lab1/` :
+In `Lab1/puzzles` :
 
 - `Cmake-Debug ` (Low Performance) : 
 
@@ -52,7 +52,7 @@ In `Lab1/` :
 
   ``` shell
   mkdir g++-build/ && cd g++-build/
-  g++ -O3 -std=c++14 -o Lab1 ../main.cpp ../src/*.cpp
+  g++ -O3 -std=c++14 -o puzzles ../main.cpp ../src/*.cpp
   ```
 
 ## Run
@@ -60,38 +60,21 @@ In `Lab1/` :
 Use the following format to get result: 
 
 ``` shell
-./Lab1 <input_file_dir> <dest_file_dir> <A / IDA> > <output_file_dir>
+./puzzles <input_file_dir> <dest_file_dir> <A / IDA> > <output_file_dir>
 ```
 
 e.g. (use $A^*$ algorithm solve input1)
 
 ``` shell
-./Lab1 ../inputs/input1.txt ../inputs/dest.txt A > ../outputs/output1.txt
+./puzzles ../inputs/input1.txt ../inputs/dest.txt A > ../outputs/output1.txt
 ```
 
 or (use $IDA^*$ algorithm solve input2)
 
 ``` shell
-./Lab1 ../inputs/input2.txt ../inputs/dest.txt IDA > ../outputs/output2.txt
+./puzzles ../inputs/input2.txt ../inputs/dest.txt IDA > ../outputs/output2.txt
 ```
 
 ## Remark
 
-Computing the precise solution of `input3.txt` cost lots of memory and time, so I compute a non-precise solution.
-
-You can modify `./src/AStar.cpp, Line 59` to get a non-precise $A^*$ algorithm ($IDA^*$ is the same way), just delete 
-
-```c++
-n_tmp->depth = n->depth + 1;
-```
-
-and add 
-
-``` c++
-if (n_tmp->from_parent_movement.first == 7) {
-		n_tmp->depth = n->depth - 1;
-} else {
-  	n_tmp->depth = n->depth + 1;	
-}
-```
-
+The code repository contains a 57-step solution of `input3.txt`. It will cost about 20 minutes and 100GiB memory to solve the solution.
