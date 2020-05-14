@@ -31,6 +31,7 @@ Node *IDAStar::graphSearch() {
     Node *n = this->nodes[0];
     int threshold = this->sm->hFunction(n->state);
     while (true) {
+        this->sm->clearCloseSet();
         std::cout << threshold << std::endl;
         int tmp = DFS(n, threshold);
         if (tmp == -1) {
@@ -71,6 +72,7 @@ int IDAStar::DFS(Node *n, int threshold) {
         n_tmp->from_parent_movement = s.first;
         n_tmp->depth = n->depth + 1;
         n_tmp->parent = n;
+        this->sm->insertIntoCloseSet(n_tmp->state);
         int tmp = DFS(n_tmp, threshold);
         if (tmp == -1) {
             return -1;
@@ -78,8 +80,10 @@ int IDAStar::DFS(Node *n, int threshold) {
         if (tmp < min_val) {
             min_val = tmp;
         }
+        this->sm->deleteCloseSetItem(n_tmp->state);
         delete[] n_tmp->state;
         delete n_tmp;
+
     }
     return min_val;
 }

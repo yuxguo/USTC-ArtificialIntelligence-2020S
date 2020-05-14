@@ -51,11 +51,6 @@ Node *AStar::graphSearch() {
             Node *n_tmp = new Node;
             n_tmp->state = s.second;
             n_tmp->from_parent_movement = s.first;
-//            if (n_tmp->from_parent_movement.first == 7) {
-//                n_tmp->depth = n->depth - 1;
-//            } else {
-//                n_tmp->depth = n->depth + 1;
-//            }
             n_tmp->depth = n->depth + 1;
             n_tmp->parent = n;
             int n_tmp_g = n_tmp->depth;

@@ -253,12 +253,14 @@ int StateManager::hFunction(const char *state) {
             if (xcol[i] == col && this->dest_info.num_pos[i][1] == col) {
                 temp[tot++] = i;
             }
-        int conf[5] = { 0 };
-        int confflag[5][5] = { 0 };
+        int conf[5] = {0};
+        int confflag[5][5] = {0};
         for (int i = 0; i < tot - 1; ++i) {
             for (int j = i + 1; j < tot; ++j) {
-                if (xrow[temp[i]] > xrow[temp[j]] && this->dest_info.num_pos[temp[i]][0] < this->dest_info.num_pos[temp[j]][0] ||
-                    xrow[temp[i]] < xrow[temp[j]] && this->dest_info.num_pos[temp[i]][0] > this->dest_info.num_pos[temp[j]][0]) {
+                if (xrow[temp[i]] > xrow[temp[j]] &&
+                    this->dest_info.num_pos[temp[i]][0] < this->dest_info.num_pos[temp[j]][0] ||
+                    xrow[temp[i]] < xrow[temp[j]] &&
+                    this->dest_info.num_pos[temp[i]][0] > this->dest_info.num_pos[temp[j]][0]) {
                     ++conf[i];
                     ++conf[j];
                     confflag[i][j] = confflag[j][i] = 1;
@@ -268,13 +270,15 @@ int StateManager::hFunction(const char *state) {
         while (1) {
             int maxi = 0;
             bool flag = (conf[maxi] > 0);
-            for (int i = 1; i < tot; ++i) if (conf[i] > conf[maxi]) {
+            for (int i = 1; i < tot; ++i)
+                if (conf[i] > conf[maxi]) {
                     maxi = i;
                     flag = true;
                 }
             if (!flag) break;
             conf[maxi] = 0;
-            for (int i = 0; i < tot; ++i) if (i != maxi)
+            for (int i = 0; i < tot; ++i)
+                if (i != maxi)
                     if (confflag[i][maxi]) {
                         --conf[i];
                         confflag[i][maxi] = confflag[maxi][i] = 0;
@@ -324,4 +328,9 @@ StateManager::StateManager(const char *dest_state) {
 
 void StateManager::clearCloseSet() {
     this->close_set.clear();
+}
+
+void StateManager::deleteCloseSetItem(const char *state) {
+    std::string s(state);
+    this->close_set.erase(s);
 }

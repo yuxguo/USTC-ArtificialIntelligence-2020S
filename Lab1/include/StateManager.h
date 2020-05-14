@@ -24,6 +24,7 @@ public:
     std::vector<std::pair<std::pair<int, char>, char *> > getSucceedStates(const char *state);
     bool insertIntoCloseSet(const char *state);
     void clearCloseSet();
+    void deleteCloseSetItem(const char *state);
     int hFunction(const char *state);
 
 private:
