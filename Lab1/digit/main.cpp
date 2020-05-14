@@ -5,9 +5,9 @@
 #include <queue>
 
 
-#include "include/AStar.h"
-#include "include/IDAStar.h"
-#include "include/include.h"
+#include "src/include/AStar.h"
+#include "src/include/IDAStar.h"
+#include "src/include/include.h"
 
 int main(int argc, char *argv[]) {
     if (argc == 4) {
