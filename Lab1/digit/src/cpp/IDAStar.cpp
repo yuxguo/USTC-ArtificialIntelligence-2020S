@@ -14,6 +14,7 @@ IDAStar::~IDAStar() {
 }
 
 IDAStar::IDAStar(const char *init_state, const char *dest_state) {
+    this->sm = new StateManager(dest_state);
     Node *n = new Node;
     n->state = new char[DIM*DIM+1];
     for (int i = 0; i < DIM*DIM+1; ++i) {
@@ -24,16 +25,17 @@ IDAStar::IDAStar(const char *init_state, const char *dest_state) {
     n->from_parent_movement.first = 0;
     n->from_parent_movement.second = '\0';
     n->depth = 0;
+    n->h = this->sm->hFunction(n->state);
     n->parent = nullptr;
     this->nodes.push_back(n);
-    this->sm = new StateManager(dest_state);
+
 }
 
 void IDAStar::graphSearch() {
     Node *n = this->nodes[0];
     int threshold = this->sm->hFunction(n->state);
 
-    this->visited.emplace(n->state, std::make_pair(true, n));
+    this->visited.emplace(n->state, Info{true, n});
     while (true) {
         int tmp = DFS(n, threshold);
         std::cout << "current nodes: " << cnt_node << std::endl;
@@ -60,7 +62,7 @@ bool IDAStar::check(const char *p1, const char *p2) {
 
 int IDAStar::DFS(Node *n, int threshold) {
     cnt_node++;
-    int f = n->depth + this->sm->hFunction(n->state);
+    int f = n->depth + n->h;
     if (f > threshold) {
         return f;
     }
@@ -80,12 +82,13 @@ int IDAStar::DFS(Node *n, int threshold) {
             n_tmp->from_parent_movement = s.first;
             n_tmp->depth = n->depth + 1;
             n_tmp->parent = n;
+            n_tmp->h = this->sm->hFunction(n_tmp->state);
             this->nodes.push_back(n_tmp);
 
-            this->visited.emplace(n_tmp->state, std::make_pair(true, n_tmp));
+            this->visited.emplace(n_tmp->state, Info{true, n_tmp});
 
             int tmp = DFS(n_tmp, threshold);
-            this->visited[n_tmp->state].first = false;
+            this->visited[n_tmp->state].in_stack = false;
             if (tmp == -1) {
                 return -1;
             }
@@ -94,17 +97,16 @@ int IDAStar::DFS(Node *n, int threshold) {
             }
 
         } else {
-            if (n_find->second.first == false) {
-                if (n->depth+1 <= n_find->second.second->depth ) {
+            if (n_find->second.in_stack == false) {
+                if (n->depth+1 <= n_find->second.n_his->depth) {
                     // not in stack and current depth is lower than old depth
-                    Node *n_tmp = n_find->second.second; // update info
+                    Node *n_tmp = n_find->second.n_his; // update info
                     n_tmp->depth = n->depth + 1;
                     n_tmp->parent = n;
                     n_tmp->from_parent_movement = s.first;
-
-                    n_find->second.first = true; // in stack
+                    n_find->second.in_stack = true; // in stack
                     int tmp = DFS(n_tmp, threshold);
-                    n_find->second.first = false;
+                    n_find->second.in_stack = false;
 
                     if (tmp == -1) {
                         return -1;
