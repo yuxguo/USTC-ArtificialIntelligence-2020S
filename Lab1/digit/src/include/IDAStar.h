@@ -12,6 +12,11 @@
 #include "include.h"
 #include "StateManager.h"
 
+struct Info{
+    bool in_stack;
+    Node *n_his;
+};
+
 class IDAStar {
 
 public:
@@ -28,7 +33,7 @@ private:
     int DFS(Node *n, int threshold);
     StateManager *sm;
     const int INF = 100000;
-    std::unordered_map<std::string, std::pair<bool, Node *> > visited;
+    std::unordered_map<std::string, Info> visited;
 };
 
 #endif //LAB1_IDASTAR_H

@@ -20,6 +20,7 @@ struct Node {
     char *state; //[DIM*DIM+1]
     std::pair<int, char> from_parent_movement;
     int depth;
+    int h;
     struct Node *parent;
 };
 
