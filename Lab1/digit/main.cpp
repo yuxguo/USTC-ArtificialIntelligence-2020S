@@ -44,8 +44,7 @@ int main(int argc, char *argv[]) {
             printMovement(n);
         } else {
             IDAStar ida_star(init_state, dest_state);
-            Node *n = ida_star.graphSearch();
-            printMovement(n);
+            ida_star.graphSearch();
         }
     }
     return 0;

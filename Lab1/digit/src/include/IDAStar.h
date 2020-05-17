@@ -7,7 +7,7 @@
 
 #include <queue>
 #include <vector>
-#include <stack>
+#include <unordered_map>
 
 #include "include.h"
 #include "StateManager.h"
@@ -17,7 +17,7 @@ class IDAStar {
 public:
     IDAStar(const char *init_state, const char *dest_state);
     ~IDAStar();
-    Node *graphSearch();
+    void graphSearch();
 private:
     std::vector<Node *> fringe;
     // std::priority_queue<std::pair<std::pair<int ,int>, Node* > ,std::vector<std::pair<std::pair<int ,int>, Node* > >, std::greater<> > fringe;
@@ -28,6 +28,7 @@ private:
     int DFS(Node *n, int threshold);
     StateManager *sm;
     const int INF = 100000;
+    std::unordered_map<std::string, std::pair<bool, Node *> > visited;
 };
 
 #endif //LAB1_IDASTAR_H
