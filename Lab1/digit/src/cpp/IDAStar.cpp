@@ -3,6 +3,8 @@
 //
 #include "../include/IDAStar.h"
 
+static int cnt_node = 0 ;
+
 IDAStar::~IDAStar() {
     for (auto & n : this->nodes) {
         delete[] n->state;
@@ -34,6 +36,7 @@ void IDAStar::graphSearch() {
     this->visited.emplace(n->state, std::make_pair(true, n));
     while (true) {
         int tmp = DFS(n, threshold);
+        std::cout << "current nodes: " << cnt_node << std::endl;
         if (tmp == -1) {
             return;
         }
@@ -56,7 +59,7 @@ bool IDAStar::check(const char *p1, const char *p2) {
 }
 
 int IDAStar::DFS(Node *n, int threshold) {
-
+    cnt_node++;
     int f = n->depth + this->sm->hFunction(n->state);
     if (f > threshold) {
         return f;
