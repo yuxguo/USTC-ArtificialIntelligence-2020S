@@ -4,11 +4,26 @@ import tqdm
 from sklearn import preprocessing
 
 from KNN import KNN
+from SVM import SVM
+from ID3 import ID3
 
 
 def data_loader(dataset_dir, rnd=True, ratio=0.7, select_col=['G1', 'G2'], dst_col='G3'):
     data = pd.read_csv(dataset_dir, sep=';')
     data[dst_col] = data[dst_col] >= 10
+    data['G1'] = data['G1'] >= 10
+    data['G2'] = data['G2'] >= 10
+    tmp = np.array(data['absences'])
+    cls_0 = tmp < 5
+    cls_1 = (tmp >= 5) & (tmp < 10)
+    cls_2 = (tmp >= 10) & (tmp < 20)
+    cls_3 = tmp >= 20
+    tmp[cls_0] = 0
+    tmp[cls_1] = 1
+    tmp[cls_2] = 2
+    tmp[cls_3] = 3
+    data['absences'] = tmp
+
     # use LabelEncoder
     for c in data.columns:
         fields = list(set(data[c]))
@@ -69,10 +84,15 @@ def evaluate(test_y, predict_y):
 
 def main():
     dataset_dir = '../data/student-mat.csv'
-    train_x, train_y, test_x, test_y = data_loader(dataset_dir)
+    select_col = ['school', 'sex', 'age', 'address', 'famsize', 'Pstatus', 'Medu', 'Fedu', 'Mjob', 'Fjob', 'reason',
+                  'guardian', 'traveltime', 'studytime', 'failures', 'schoolsup', 'famsup', 'paid', 'activities',
+                  'nursery', 'higher', 'internet', 'romantic', 'famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health',
+                  'absences']
+    train_x, train_y, test_x, test_y = data_loader(dataset_dir, select_col=select_col)
     print(test_y.shape)
-    knn = KNN()
+    knn = ID3()
     knn.fit(train_x, train_y)
+    print(knn.tree)
     predict_y = knn.predict(test_x)
     result = evaluate(test_y, predict_y)
     print(result)
