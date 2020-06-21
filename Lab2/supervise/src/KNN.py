@@ -11,7 +11,7 @@ def l1(a, b):
 
 
 def l2(a, b):
-    return np.sum(np.sqrt(a - b), axis=1)
+    return np.sum(np.square(a - b), axis=1)
 
 
 def dis_match(a, b):
@@ -23,7 +23,7 @@ class KNN(object):
     解决二分类问题，标签 [0, 1]
     '''
 
-    def __init__(self, distance_function=dis_match, threshold=0.5, K=20):
+    def __init__(self, distance_function=dis_match, threshold=0.5, K=25):
         if distance_function == 'l1':
             self.d_f = l1
         elif distance_function == 'l2':

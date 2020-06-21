@@ -1,4 +1,10 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
+
+def plot_pca_stats(e_val):
+    plt.plot(np.array(e_val) / np.sum(np.array(e_val)))
+    plt.show()
 
 
 class PCA(object):
@@ -21,6 +27,7 @@ class PCA(object):
         e_val, e_vec = np.linalg.eig(cov_mat)
         tmp = sorted(zip(e_val, e_vec.T), reverse=True)
         e_val, e_vec = zip(*tmp)
+        # plot_pca_stats(e_val)
         if self.use_threshold:
             total = sum(e_val)
             tmp = 0
@@ -34,7 +41,6 @@ class PCA(object):
             W = [list(np.squeeze(np.array(e_vec[i]))) for i in range(self.first_k)]
 
         self.W = np.mat(np.array(W)).T
-        print('DIM:', self.W.shape)
         self.mean_vec = mean_vec
         proj_train = self.train_x.T * self.W
         return proj_train

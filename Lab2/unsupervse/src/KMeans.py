@@ -3,7 +3,7 @@ import random
 
 
 class KMeans(object):
-    def __init__(self, K=3, threshold=0.5):
+    def __init__(self, K=3, threshold=0.01):
         self.K = K
         self.threshold = threshold
         self.train_x = None
@@ -16,7 +16,7 @@ class KMeans(object):
         for i in random.sample(range(m), self.K):
             center.append(list(np.squeeze(np.array(self.train_x[i, :]))))
         center = np.mat(center)
-        error = 10000
+        error = 10000000
         label = None
         while error > self.threshold:
             center_old = center.copy()

@@ -7,6 +7,7 @@ def ent(p):
         ent_d += 0 if p_k == 0 else p_k * np.log2(p_k)
     return -ent_d
 
+
 def check_equ(a):
     flag = True
     for line in a:

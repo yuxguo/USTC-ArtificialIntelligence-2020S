@@ -68,6 +68,14 @@ def evaluate(test_y, predict_y):
             FN += 1
         elif test_y[i][0] == 0 and predict_y[i][0] == 1:
             FP += 1
+    if TP == 0:
+        TP = 1
+    if FP == 0:
+        FP = 1
+    if FN == 0:
+        FN = 1
+    if TN == 0:
+        TN = 1
     P = TP / (TP + FP)
     R = TP / (TP + FN)
     F1 = (2 * P * R) / (P + R)
@@ -87,12 +95,12 @@ def main():
     select_col = ['school', 'sex', 'age', 'address', 'famsize', 'Pstatus', 'Medu', 'Fedu', 'Mjob', 'Fjob', 'reason',
                   'guardian', 'traveltime', 'studytime', 'failures', 'schoolsup', 'famsup', 'paid', 'activities',
                   'nursery', 'higher', 'internet', 'romantic', 'famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health',
-                  'absences']
+                  'absences',]
+    #               'G1', 'G2']
+    select_col = ['G1', 'G2']
     train_x, train_y, test_x, test_y = data_loader(dataset_dir, select_col=select_col)
-    print(test_y.shape)
     knn = ID3()
     knn.fit(train_x, train_y)
-    print(knn.tree)
     predict_y = knn.predict(test_x)
     result = evaluate(test_y, predict_y)
     print(result)

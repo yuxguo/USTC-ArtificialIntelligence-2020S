@@ -3,7 +3,7 @@ import random
 
 
 class SVM(object):
-    def __init__(self, kernel='poly', max_iter=40, C=0.5, toler=0.00001):
+    def __init__(self, kernel='rbf', max_iter=40, C=0.2, toler=0.00001):
         self.C = C
         self.kernel_f = get_kernel_function(kernel)
         self.max_iter = max_iter
@@ -121,7 +121,6 @@ class SVM(object):
                     if 0 < self.alphas[i1] < self.C:
                         num_changed += self.examine(i1)
             iters += 1
-            print(iters)
             if examine_all:
                 examine_all = False
             elif num_changed == 0:
