@@ -3,7 +3,7 @@ import random
 
 
 class SVM(object):
-    def __init__(self, kernel='rbf', max_iter=40, C=0.2, toler=0.00001):
+    def __init__(self, kernel='linear', max_iter=40, C=100, toler=0.00001):
         self.C = C
         self.kernel_f = get_kernel_function(kernel)
         self.max_iter = max_iter
@@ -40,9 +40,9 @@ class SVM(object):
 
     def f_x(self, alphas, x_m, y_m, x, b):
         m, n = np.shape(x_m)
-        result = 0
+        result = b
         for i in range(m):
-            result += float(alphas[i] * y_m[i] * self.kernel_f(x, x_m[i])) + b
+            result += float(alphas[i] * y_m[i] * self.kernel_f(x, x_m[i]))
         return result
 
     def select_j(self, i):

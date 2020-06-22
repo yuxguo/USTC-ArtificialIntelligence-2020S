@@ -99,7 +99,7 @@ def main():
     #               'G1', 'G2']
     select_col = ['G1', 'G2']
     train_x, train_y, test_x, test_y = data_loader(dataset_dir, select_col=select_col)
-    knn = ID3()
+    knn = SVM()
     knn.fit(train_x, train_y)
     predict_y = knn.predict(test_x)
     result = evaluate(test_y, predict_y)

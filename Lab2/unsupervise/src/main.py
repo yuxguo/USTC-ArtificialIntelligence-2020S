@@ -41,9 +41,9 @@ def evaluate(train_x, train_y, predict_y):
             elif train_y[i][0] == train_y[j][0] and predict_y[i][0] != predict_y[j][0]:
                 b += 1
             elif train_y[i][0] != train_y[j][0] and predict_y[i][0] == predict_y[j][0]:
-                b += 1
+                c += 1
             elif train_y[i][0] != train_y[j][0] and predict_y[i][0] != predict_y[j][0]:
-                b += 1
+                d += 1
     s = []
     for i in range(len(train_y)):
         a_s = []
@@ -97,7 +97,7 @@ def visualization(center, data, label, k):
 
 
 def main():
-    k = 3
+    k = 2
     dataset_dir = '../input/wine.csv'
     train_x, train_y, raw_data = data_loader(dataset_dir)
     pca = PCA(first_k=k, use_threshold=False, threshold=0.5)
