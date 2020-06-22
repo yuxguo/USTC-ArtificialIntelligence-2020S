@@ -29,7 +29,7 @@ def data_loader(dataset_dir, normalization=True, rnd=False, select_col=None, dst
     return train_x.reshape(len(train_x), -1), train_y.reshape(len(train_y), -1), np.array(data)
 
 
-def evaluate(train_x, train_y, predict_y):
+def evaluate(train_x, train_y, predict_y, k=3):
     assert train_y.shape == predict_y.shape
     a, b, c, d = 0, 0, 0, 0
     for i in range(len(train_y)):
@@ -46,17 +46,14 @@ def evaluate(train_x, train_y, predict_y):
                 d += 1
     s = []
     for i in range(len(train_y)):
-        a_s = []
-        b_s = []
+        dis = [[] for j in range(k)]
+        class_i = predict_y[i][0]
         for j in range(len(train_y)):
             if i == j:
                 continue
-            if predict_y[i][0] == predict_y[j][0]:
-                a_s.append(np.linalg.norm(train_x[i, :] - train_x[j, :], ord=2))
-            elif predict_y[i][0] != predict_y[j][0]:
-                b_s.append(np.linalg.norm(train_x[i, :] - train_x[j, :], ord=2))
-        a_i = np.mean(np.array(a_s))
-        b_i = np.mean(np.array(b_s))
+            dis[predict_y[j][0]].append(np.linalg.norm(train_x[i, :] - train_x[j, :], ord=2))
+        a_i = np.mean(dis[class_i])
+        b_i = min([np.mean(dis[j]) for j in range(k) if j != class_i])
         s.append((b_i - a_i) / max(a_i, b_i))
 
     return {
@@ -97,15 +94,15 @@ def visualization(center, data, label, k):
 
 
 def main():
-    k = 2
+    dim = 2
     dataset_dir = '../input/wine.csv'
     train_x, train_y, raw_data = data_loader(dataset_dir)
-    pca = PCA(first_k=k, use_threshold=False, threshold=0.5)
+    pca = PCA(first_k=dim, use_threshold=False, threshold=0.5)
     proj = pca.fit(train_x)
     kmeans = KMeans()
     center, predict_y = kmeans.fit(proj)
     result = evaluate(train_x, train_y, predict_y)
-    visualization(center, proj, train_y, k)
+    visualization(center, proj, train_y, dim)
     save_to_csv(raw_data, predict_y)
     print(result)
 
