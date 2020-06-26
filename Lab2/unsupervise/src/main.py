@@ -96,8 +96,8 @@ def visualization(center, data, label, k):
 
 
 def main():
-    dim = 13
-    num_class = 4
+    dim = 2
+    num_class = 3
     dataset_dir = '../input/wine.csv'
     train_x, train_y, raw_data = data_loader(dataset_dir)
     pca = PCA(first_k=dim, use_threshold=False, threshold=0.5)
