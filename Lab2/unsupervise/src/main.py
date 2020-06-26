@@ -9,11 +9,13 @@ from KMeans import KMeans
 
 def data_loader(dataset_dir, normalization=True, rnd=False, select_col=None, dst_col='Class'):
     data = pd.read_csv(dataset_dir)
+
     data[dst_col] = np.array(data[dst_col]) - np.min(np.array(data[dst_col]))
     if select_col is not None:
         data_x = data[data.columns.difference([dst_col])][select_col].copy()
     else:
         data_x = data[data.columns.difference([dst_col])].copy()
+
     data_y = data[dst_col].copy()
     idx = np.arange(len(data))
     if rnd:
@@ -46,7 +48,7 @@ def evaluate(train_x, train_y, predict_y, k=3):
                 d += 1
     s = []
     for i in range(len(train_y)):
-        dis = [[] for j in range(k)]
+        dis = [[] for _ in range(k)]
         class_i = predict_y[i][0]
         for j in range(len(train_y)):
             if i == j:
@@ -74,7 +76,7 @@ def save_to_csv(data, label):
 
 
 def visualization(center, data, label, k):
-    colors = ['lightgreen', 'orange', 'lightblue']
+    colors = ['lightgreen', 'orange', 'lightblue', 'yellow', 'black']
     if k == 2:
         for i in range(len(data)):
             plt.scatter(data[i, 0], data[i, 1], c=colors[label[i][0]])
@@ -94,15 +96,16 @@ def visualization(center, data, label, k):
 
 
 def main():
-    dim = 2
+    dim = 13
+    num_class = 4
     dataset_dir = '../input/wine.csv'
     train_x, train_y, raw_data = data_loader(dataset_dir)
     pca = PCA(first_k=dim, use_threshold=False, threshold=0.5)
     proj = pca.fit(train_x)
-    kmeans = KMeans()
+    kmeans = KMeans(K=num_class)
     center, predict_y = kmeans.fit(proj)
-    result = evaluate(train_x, train_y, predict_y)
-    visualization(center, proj, train_y, dim)
+    result = evaluate(proj, train_y, predict_y, k=num_class)
+    visualization(center, proj, predict_y, dim)
     save_to_csv(raw_data, predict_y)
     print(result)
 
